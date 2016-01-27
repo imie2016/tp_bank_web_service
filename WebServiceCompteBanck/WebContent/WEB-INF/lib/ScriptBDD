@@ -1,3 +1,4 @@
+-- BDD : 'banck'
 Create table proprietaire (
 id serial primary key,
 nom varchar,
