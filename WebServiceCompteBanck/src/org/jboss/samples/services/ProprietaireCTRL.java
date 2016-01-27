@@ -1,5 +1,5 @@
 package org.jboss.samples.services;
 
-public class Compte {
+public class ProprietaireCTRL {
 
 }
