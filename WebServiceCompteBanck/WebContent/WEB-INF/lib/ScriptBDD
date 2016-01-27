@@ -1,0 +1,26 @@
+Create table proprietaire (
+id serial primary key,
+nom varchar,
+prenom varchar
+);
+Create table compte (
+id serial primary key,
+solde int,
+proprietaires_id int references proprietaire(id)
+);
+insert into proprietaire(nom, prenom) values ('Dupont', 'Jean');
+insert into proprietaire(nom, prenom) values ('Dupont', 'Marie');
+insert into proprietaire(nom, prenom) values ('Durant', 'Pierre');
+insert into proprietaire(nom, prenom) values ('Dupont', 'Charle');
+insert into proprietaire(nom, prenom) values ('Moulinet', 'Steven');
+
+insert into compte(solde, proprietaires_id) values (15464, 1);
+insert into compte(solde, proprietaires_id) values (-150, 1);
+insert into compte(solde, proprietaires_id) values (150, 2);
+insert into compte(solde, proprietaires_id) values (-5654, 3);
+insert into compte(solde, proprietaires_id) values (546, 4);
+insert into compte(solde, proprietaires_id) values (789, 4);
+insert into compte(solde, proprietaires_id) values (0, 4);
+
+select * from compte;
+select * from proprietaire;
