@@ -6,6 +6,8 @@ import javax.jws.WebService;
 @WebService()
 public class Banck {
 
+	
+	//test appel factory
 	@WebMethod()
 	public void creerCompte(Integer identifiantProprietaire) {
 	    
