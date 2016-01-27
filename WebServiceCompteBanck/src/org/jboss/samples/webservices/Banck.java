@@ -14,13 +14,13 @@ public class Banck {
 	public void testConnexion() {
 	    System.out.println("demarrage test connexion");
 		DAOFactory.getInstance();
-	  
-	//hopla
+
 	}
 	
 	@WebMethod()
-	public void creerCompte(Integer identifiantProprietaire) {
+	public String creerCompte(Integer identifiantProprietaire) {
 	    
+		return null;
 	}
 	@WebMethod()
 	public Integer SoldeCompte(Integer identifiantProprietaire) {
