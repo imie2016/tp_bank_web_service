@@ -14,7 +14,8 @@ public class Banck {
 	public void testConnexion() {
 	    System.out.println("demarrage test connexion");
 		DAOFactory.getInstance();
-	    
+	  
+	//hopla
 	}
 	
 	@WebMethod()
