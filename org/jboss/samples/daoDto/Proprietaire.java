@@ -6,7 +6,7 @@ public interface Proprietaire {
 	
 	public List<ProprietaireDAO> listerProprietaire();
 	
-	public boolean ajouterPropripetaire();
+	public boolean ajouterProprietaire();
 	
 	public boolean modifierProprietaire();
 	
