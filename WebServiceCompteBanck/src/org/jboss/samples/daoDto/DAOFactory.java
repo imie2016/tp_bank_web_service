@@ -1,6 +1,5 @@
 package org.jboss.samples.daoDto;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -32,10 +31,10 @@ public class DAOFactory {
      */
     public static DAOFactory getInstance() {
         Properties properties = new Properties();
-        String url;
-        String driver;
-        String nomUtilisateur;
-        String motDePasse;
+        String url = null ;
+        String driver = null;
+        String nomUtilisateur = null;
+        String motDePasse = null;
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         InputStream fichierProperties = classLoader.getResourceAsStream( FICHIER_PROPERTIES );
@@ -74,6 +73,6 @@ public class DAOFactory {
      * pour le moment)
      */
     public CompteDao getCompteDao() {
-        return new CompteDao( this );
+        return new CompteDao(  );
     }
 }
