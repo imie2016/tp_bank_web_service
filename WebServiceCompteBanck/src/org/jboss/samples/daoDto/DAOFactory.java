@@ -1,78 +1,57 @@
 package org.jboss.samples.daoDto;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class DAOFactory {
 
-    private static final String FICHIER_PROPERTIES       = "/org/jboss/samples/properties.properties";
-    private static final String PROPERTY_URL             = "url";
-    private static final String PROPERTY_DRIVER          = "driver";
-    private static final String PROPERTY_NOM_UTILISATEUR = "nomutilisateur";
-    private static final String PROPERTY_MOT_DE_PASSE    = "motdepasse";
+	private String url = "jdbc:postgresql://localhost:5432/banck";
+	private String username = "postgres";
+	private String password = "P@ssword";
+	private String driver = "org.postgresql.Driver";
+	private static Connection connect;
+	private static DAOFactory instance;
 
-    private String              url;
-    private String              username;
-    private String              password;
-
-    DAOFactory( String url, String username, String password ) {
-        this.url = url;
-        this.username = username;
-        this.password = password;
+    public DAOFactory( ) {
+        try {
+			Class.forName(driver);
+			System.out.println("Driver chargé");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+        try {
+        	connect = DriverManager.getConnection(url, username, password);
+			System.out.println("Connecté a la base");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
     }
 
-    /*
-     * Méthode chargée de récupérer les informations de connexion à la base de
-     * données, charger le driver JDBC et retourner une instance de la Factory
-     */
     public static DAOFactory getInstance() {
-        Properties properties = new Properties();
-        String url = null ;
-        String driver = null;
-        String nomUtilisateur = null;
-        String motDePasse = null;
+		if (DAOFactory.instance == null) {
+			System.out.println("ouverture d'une nouvelle connection");
+			synchronized (DAOFactory.class) {
+				DAOFactory.instance = new DAOFactory();
+			}
+		}
+		System.out.println("une connection est deja ouvverte");
+		return instance;
+	}
 
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        InputStream fichierProperties = classLoader.getResourceAsStream( FICHIER_PROPERTIES );
+	public Connection getConnection() {
+		Connection c = connect;
+		return c;
 
-        if ( fichierProperties == null ) {
-            System.out.println("fichier de conf introuvable");
-        }
+	}
 
-        try {
-            properties.load( fichierProperties );
-            url = properties.getProperty( PROPERTY_URL );
-            driver = properties.getProperty( PROPERTY_DRIVER );
-            nomUtilisateur = properties.getProperty( PROPERTY_NOM_UTILISATEUR );
-            motDePasse = properties.getProperty( PROPERTY_MOT_DE_PASSE );
-        } catch ( IOException e ) {
-        	System.out.println("fichier de conf impossible a charger");
-        }
-
-        try {
-            Class.forName( driver );
-        } catch ( ClassNotFoundException e ) {
-        	System.out.println("Driver introuvable");
-        }
-
-        DAOFactory instance = new DAOFactory( url, nomUtilisateur, motDePasse );
-        return instance;
-    }
-
-    /* Méthode chargée de fournir une connexion à la base de données */
-     /* package */ Connection getConnection() throws SQLException {
-        return DriverManager.getConnection( url, username, password );
-    }
-
-    /*
-     * Méthodes de récupération de l'implémentation des différents DAO (un seul
-     * pour le moment)
-     */
-    public CompteDao getCompteDao() {
-        return new CompteDao(  );
-    }
+	public static void fermetureConnextion() {
+		try {
+			connect.close();
+			System.out.println("Déconnecté du serveur");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
