@@ -13,8 +13,8 @@ public class Banck {
 	@WebMethod()
 	public void testConnexion() {
 	    System.out.println("demarrage test connexion");
-		DAOFactory.getInstance();
-
+	    DAOFactory.getInstance();
+	    
 	}
 	
 	@WebMethod()
