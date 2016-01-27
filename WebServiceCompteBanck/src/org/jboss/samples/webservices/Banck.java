@@ -3,40 +3,39 @@ package org.jboss.samples.webservices;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import org.jboss.samples.daoDto.Compte;
-import org.jboss.samples.daoDto.CompteDao;
 import org.jboss.samples.daoDto.DAOFactory;
+import org.jboss.samples.daoDto.Proprietaire;
+import org.jboss.samples.services.CompteCTRL;
 
 @WebService()
 public class Banck {
-
+	private CompteCTRL compte = new CompteCTRL();;
+	private String message = "";
 	
 	//test appel
 	@WebMethod()
 	public void testConnexion() {
-	    System.out.println("demarrage test connexion");
+	    System.out.println("demarrage du test de connexion :");
 		DAOFactory.getInstance();
-
 	}
 	
 	@WebMethod()
-	public String creerCompte(Integer identifiantProprietaire) {
-	    
-		return null;
+	public String creerCompte(Proprietaire proprio) {
+		return compte.ajouterCompte(proprio);
 	}
 	@WebMethod()
-	public Integer SoldeCompte(Integer identifiantProprietaire) {
+	public String SoldeCompte(Integer identifiantProprietaire) {
 	    
 	    return null;
 	}
 	@WebMethod()
-	public Integer deposerArgent(Integer identifiantProprietaire) {
+	public String deposerArgent(Integer identifiantProprietaire) {
 	    
 		//return le solde
 	    return null;
 	}
 	@WebMethod()
-	public Integer retirerArgent(Integer identifiantProprietaire) {
+	public String retirerArgent(Integer identifiantProprietaire) {
 	    
 		//return le solde
 	    return null;
