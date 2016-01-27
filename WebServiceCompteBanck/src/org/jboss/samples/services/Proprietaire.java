@@ -1,17 +1,15 @@
-package org.jboss.samples.daoDto;
+package org.jboss.samples.services;
 
 import java.util.List;
+
+import org.jboss.samples.daoDto.*;
 
 public interface Proprietaire {
 	
 	public List<ProprietaireDAO> listerProprietaire();
-	
-	public ProprietaireDAO afficherProprietaire();
-	
-	public boolean ajouterProprietaire();
-	
-	public boolean modifierProprietaire();
-	
-	public boolean supprimerProprietaire();
+	public ProprietaireDAO afficherProprietaire(Integer id);
+	public boolean ajouterProprietaire(Proprietaire newProprio);
+	public boolean modifierProprietaire(Proprietaire updateProprio);
+	public boolean supprimerProprietaire(Proprietaire deleteProprio);
 
 }
