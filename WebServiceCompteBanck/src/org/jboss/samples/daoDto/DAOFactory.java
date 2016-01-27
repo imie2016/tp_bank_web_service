@@ -35,8 +35,10 @@ public class DAOFactory {
 			synchronized (DAOFactory.class) {
 				DAOFactory.instance = new DAOFactory();
 			}
+		}else{
+			System.out.println("une connection est deja ouvverte");
 		}
-		System.out.println("une connection est deja ouvverte");
+		
 		return instance;
 	}
 
