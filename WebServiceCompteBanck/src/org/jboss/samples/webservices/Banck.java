@@ -3,6 +3,8 @@ package org.jboss.samples.webservices;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import org.jboss.samples.daoDto.Compte;
+import org.jboss.samples.daoDto.CompteDao;
 import org.jboss.samples.daoDto.DAOFactory;
 
 @WebService()
