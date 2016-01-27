@@ -6,6 +6,8 @@ public interface Proprietaire {
 	
 	public List<ProprietaireDAO> listerProprietaire();
 	
+	public ProprietaireDAO afficherProprietaire();
+	
 	public boolean ajouterProprietaire();
 	
 	public boolean modifierProprietaire();
