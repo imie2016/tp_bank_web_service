@@ -9,7 +9,7 @@ import org.jboss.samples.daoDto.DAOFactory;
 public class Banck {
 
 	
-	//test appel factory
+	//test appel
 	@WebMethod()
 	public void testConnexion() {
 	    System.out.println("demarrage test connexion");
