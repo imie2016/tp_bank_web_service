@@ -16,8 +16,9 @@ public class Banck {
 	}
 	
 	@WebMethod()
-	public void creerCompte(Integer identifiantProprietaire) {
+	public String creerCompte(Integer identifiantProprietaire) {
 	    
+		return result;
 	}
 	@WebMethod()
 	public Integer SoldeCompte(Integer identifiantProprietaire) {
