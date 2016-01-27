@@ -5,6 +5,13 @@ public class ProprietaireImpl {
 	private String nom;
 	private String prenom;
 	
+	public ProprietaireImpl(Integer id, String nom, String prenom) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

@@ -5,6 +5,13 @@ public class CompteImpl {
 	private Integer solde;
 	private Integer proprietaires_id;
 	
+	public CompteImpl(Integer id, Integer solde, Integer proprietaires_id) {
+		super();
+		this.id = id;
+		this.solde = solde;
+		this.proprietaires_id = proprietaires_id;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

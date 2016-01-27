@@ -2,30 +2,37 @@ package org.jboss.samples.daoDto;
 
 import java.util.List;
 
-public class CompteDao implements Compte{
+public class CompteDao implements compteCRUD{
 
 	@Override
-	public List<CompteDao> listerCompte(Proprietaire proprio) {
+	public List<CompteImpl> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean ajouterCompte(Proprietaire proprio, Compte newCompte) {
+	public CompteImpl findById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean create(CompteImpl compte) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean modifierCompte(Compte updateCompte) {
+	public boolean update(CompteImpl compte) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean supprimerCompte(Compte deleteCompte) {
+	public boolean delete(CompteImpl compte) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 
 }
