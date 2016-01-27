@@ -3,9 +3,18 @@ package org.jboss.samples.webservices;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import org.jboss.samples.daoDto.DAOFactory;
+
 @WebService()
 public class Banck {
 
+	@WebMethod()
+	public void testConnexion() {
+	    System.out.println("demarrage test connexion");
+		DAOFactory.getInstance();
+	    
+	}
+	
 	@WebMethod()
 	public void creerCompte(Integer identifiantProprietaire) {
 	    
