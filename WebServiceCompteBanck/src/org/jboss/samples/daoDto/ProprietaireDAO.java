@@ -10,21 +10,26 @@ import java.util.List;
 
 
 
-public class ProprietaireDAO implements ProprietaireImpl{
+public class ProprietaireDAO extends DAO<ProprietaireDAO>{
+
 	Connection connexion = null;
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
     List<ProprietaireDTO> proprietaireResult = new ArrayList<>();
+    
+	public ProprietaireDAO(Connection conn) {
+		super(conn);
+		connexion = conn;
+	}
+
 	
 	@Override
-	public List<ProprietaireDTO> findAll() {
+	public List<ProprietaireDTO> findAllProprio() {
 		
 	    String SQL_REQ = "SELECT * FROM proprietaire";
 
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
-	    	DAOFactory daof = DAOFactory.getInstance();
-	    	connexion = daof.getConnection();
 	    	connexion.setAutoCommit(false);
 	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, false);
 	        resultSet = preparedStatement.executeQuery();
@@ -51,13 +56,11 @@ public class ProprietaireDAO implements ProprietaireImpl{
 
 	
 	@Override
-	public ProprietaireDTO findById(Integer id) {
+	public ProprietaireDTO findByIdProprio(Integer id) {
 	    String SQL_REQ = "SELECT * FROM proprietaire WHERE id = ?";
 	    ProprietaireDTO ligne2 = null;
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
-	    	DAOFactory daof = DAOFactory.getInstance();
-	    	connexion = daof.getConnection();
 	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, false, id);
 	        resultSet = preparedStatement.executeQuery();
 	        //System.out.println("hop");
@@ -75,12 +78,10 @@ public class ProprietaireDAO implements ProprietaireImpl{
 	}
 
 	@Override
-	public boolean create(ProprietaireDTO proprietaire) {
+	public boolean createProprio(ProprietaireDTO proprietaire) {
 		String SQL_REQ = "insert into proprietaire(nom, prenom) values (?, ?)";
 		Integer resultSetInt = null;
 	    try {
-	    	DAOFactory daof = DAOFactory.getInstance();
-	    	connexion = daof.getConnection();
 	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, true, proprietaire.getNom(), proprietaire.getPrenom());
 	        resultSetInt = preparedStatement.executeUpdate();
 	        
@@ -103,13 +104,11 @@ public class ProprietaireDAO implements ProprietaireImpl{
 	}
 
 	@Override
-	public boolean update(ProprietaireDTO proprietaire) {
+	public boolean updateProprio(ProprietaireDTO proprietaire) {
 		String SQL_REQ = "UPDATE proprietaire SET nom = ?, prenom = ? WHERE id = ?";
 		Integer resultSetInt = null;
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
-	    	DAOFactory daof = DAOFactory.getInstance();
-	    	connexion = daof.getConnection();
 	    	
 	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, true, proprietaire.getNom(), proprietaire.getPrenom(), proprietaire.getId());
 	        resultSetInt = preparedStatement.executeUpdate();
@@ -133,13 +132,11 @@ public class ProprietaireDAO implements ProprietaireImpl{
 	
 	
 	@Override
-	public boolean delete(ProprietaireDTO proprietaire) {
+	public boolean deleteProprio(ProprietaireDTO proprietaire) {
 		String SQL_REQ = "DELETE FROM proprietaire WHERE id=?";
 		Integer resultSetInt = null;
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
-	    	DAOFactory daof = DAOFactory.getInstance();
-	    	connexion = daof.getConnection();
 	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, true, proprietaire.getId());
 	        resultSetInt = preparedStatement.executeUpdate();
 
@@ -219,6 +216,62 @@ public class ProprietaireDAO implements ProprietaireImpl{
 	    fermetureSilencieuse( resultSet );
 	    fermetureSilencieuse( statement );
 //	    fermetureSilencieuse( connexion );
+	}
+
+
+	@Override
+	public List<CompteDTO> findAllCompte() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<CompteDTO> findByProprio(ProprietaireDTO proprio) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public CompteDTO findByIdCompte(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public boolean createCompte(CompteDTO compte) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean updateCompte(CompteDTO compte) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean deleteCompte(CompteDTO compte) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean transactionRetrait(CompteDTO compte, Integer montant) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean transactionDepot(CompteDTO compte, Integer montant) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

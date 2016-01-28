@@ -26,7 +26,7 @@ public class CompteDao extends DAO<CompteDTO>{
 	}
     
 	@Override
-	public List<CompteDTO> findAll() {
+	public List<CompteDTO> findAllCompte() {
 		
 	    String SQL_REQ = "SELECT * FROM compte";
 
@@ -89,7 +89,7 @@ public class CompteDao extends DAO<CompteDTO>{
 	}
 	
 	@Override
-	public CompteDTO findById(Integer id) {
+	public CompteDTO findByIdCompte(Integer id) {
 	    String SQL_REQ = "SELECT * FROM compte WHERE id = ?";
 	    CompteDTO ligne2 = null;
 	    try {
@@ -111,7 +111,7 @@ public class CompteDao extends DAO<CompteDTO>{
 	}
 
 	@Override
-	public boolean create(CompteDTO compte) {
+	public boolean createCompte(CompteDTO compte) {
 		String SQL_REQ = "insert into compte(solde, proprietaires_id) values (?, ?)";
 		Integer resultSetInt = null;
 	    try {
@@ -138,7 +138,7 @@ public class CompteDao extends DAO<CompteDTO>{
 	}
 
 	@Override
-	public boolean update(CompteDTO compte) {
+	public boolean updateCompte(CompteDTO compte) {
 		String SQL_REQ = "UPDATE compte SET solde = ?, proprietaires_id = ? WHERE id = ?";
 		Integer resultSetInt = null;
 	    try {
@@ -217,7 +217,7 @@ public class CompteDao extends DAO<CompteDTO>{
 	}
 	
 	@Override
-	public boolean delete(CompteDTO compte) {
+	public boolean deleteCompte(CompteDTO compte) {
 		String SQL_REQ = "DELETE FROM compte WHERE id=?";
 		Integer resultSetInt = null;
 	    try {
@@ -299,6 +299,36 @@ public class CompteDao extends DAO<CompteDTO>{
 	    fermetureSilencieuse( resultSet );
 	    fermetureSilencieuse( statement );
 //	    fermetureSilencieuse( connexion );
+	}
+
+	@Override
+	public List<ProprietaireDTO> findAllProprio() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ProprietaireDTO findByIdProprio(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean createProprio(ProprietaireDTO proprio) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateProprio(ProprietaireDTO proprio) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteProprio(ProprietaireDTO proprio) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 
