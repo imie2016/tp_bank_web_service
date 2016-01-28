@@ -1,26 +1,30 @@
 package org.jboss.samples.webservices;
 
+import org.jboss.samples.daoDto.CompteDTO;
 import org.jboss.samples.daoDto.CompteDao;
 import org.jboss.samples.daoDto.CompteImpl;
-import org.jboss.samples.daoDto.DAOFactory;
-import org.jboss.samples.services.CompteCTRL;
+
 
 public class Test {
 
 	public static void main(String[] args) {
 		
-		//CompteImpl comptee = new CompteDT
-		// FAIRE LE TEST INSERT ICI ???
-				
-		
-				
+		//CompteDTO newCompte = new CompteDTO(null, 999, 1);
+
 		//TEST DE LA CONNEXION
 		//DAOFactory.getInstance();
 		CompteImpl test = new CompteDao();
-		
 		//test.findAll();
-		//test.findById(1);
-		test.create();
+		//test.create(newCompte);
+		
+		
+		//TEST UPDATE
+		CompteDTO newCompte = test.findById(1);
+//		System.out.println(newCompte.getId());
+//		newCompte.setSolde(-999);
+//		test.update(newCompte);
+		
+		test.delete(newCompte);
 	}
 
 }
