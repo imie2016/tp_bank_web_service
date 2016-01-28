@@ -8,4 +8,7 @@ public class DAOFactory {
 	public static DAO getCompteDAO(){
 		return new CompteDao(conn);
 	}
+	public static DAO getProprietaireDAO(){
+		return new ProprietaireDAO(conn);
+	}
 }
