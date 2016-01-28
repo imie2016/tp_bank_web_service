@@ -12,6 +12,7 @@ public class Test {
 		//CompteImpl comptee = new CompteDT
 		// FAIRE LE TEST INSERT ICI ???
 				
+		
 				
 		//TEST DE LA CONNEXION
 		//DAOFactory.getInstance();
