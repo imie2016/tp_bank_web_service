@@ -3,9 +3,10 @@ package org.jboss.samples.daoDto;
 import java.util.List;
 
 public interface ProprietaireImpl {
-	List<CompteDTO> findAll();
-	CompteDTO findById(Integer id);
-	boolean create(CompteDTO compte);
-	boolean update(CompteDTO compte);
-	boolean delete(CompteDTO compte);
+	List<ProprietaireDTO> findAll();
+	ProprietaireDTO findById(Integer id);
+	boolean create(ProprietaireDTO Proprietaire);
+	boolean update(ProprietaireDTO Proprietaire);
+	boolean delete(ProprietaireDTO Proprietaire);
+	
 }
