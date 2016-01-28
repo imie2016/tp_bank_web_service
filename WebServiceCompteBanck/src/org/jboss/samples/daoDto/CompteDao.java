@@ -10,12 +10,21 @@ import java.util.List;
 
 
 
-public class CompteDao implements CompteImpl{
+public class CompteDao extends DAO<CompteDTO>{
+	
+
+
+
 	Connection connexion = null;
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
     List<CompteDTO> compteResult = new ArrayList<>();
 	
+	public CompteDao(Connection conn) {
+		super(conn);
+		connexion = conn;
+	}
+    
 	@Override
 	public List<CompteDTO> findAll() {
 		
@@ -23,8 +32,6 @@ public class CompteDao implements CompteImpl{
 
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
-	    	DAOFactory daof = DAOFactory.getInstance();
-	    	connexion = daof.getConnection();
 	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, false);
 	        resultSet = preparedStatement.executeQuery();
 	        //System.out.println("hop");
@@ -47,8 +54,6 @@ public class CompteDao implements CompteImpl{
 	    String SQL_REQ = "SELECT * FROM compte WHERE id = ?";
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
-	    	DAOFactory daof = DAOFactory.getInstance();
-	    	connexion = daof.getConnection();
 	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, false, id);
 	        resultSet = preparedStatement.executeQuery();
 	        //System.out.println("hop");
@@ -72,8 +77,6 @@ public class CompteDao implements CompteImpl{
 		String SQL_REQ = "insert into compte(solde, proprietaires_id) values (?, ?)";
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
-	    	DAOFactory daof = DAOFactory.getInstance();
-	    	connexion = daof.getConnection();
 	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, false, compte.getSolde(), compte.getProprietaires_id());
 	        resultSet = preparedStatement.executeQuery();
 
@@ -121,20 +124,12 @@ public class CompteDao implements CompteImpl{
 	    if ( resultSet != null ) {
 
 	        try {
-
 	            resultSet.close();
-
 	        } catch ( SQLException e ) {
-
 	            System.out.println( "Échec de la fermeture du ResultSet : " + e.getMessage() );
-
 	        }
-
 	    }
-
 	}
-
-
 	/* Fermeture silencieuse du statement */
 
 	public static void fermetureSilencieuse( Statement statement ) {
@@ -199,5 +194,6 @@ public class CompteDao implements CompteImpl{
 	    fermetureSilencieuse( connexion );
 
 	}
+
 
 }
