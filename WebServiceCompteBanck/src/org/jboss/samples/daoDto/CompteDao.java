@@ -32,26 +32,66 @@ public class CompteDao extends DAO<CompteDTO>{
 
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
+	    	connexion.setAutoCommit(false);
+
 	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, false);
 	        resultSet = preparedStatement.executeQuery();
-	        //System.out.println("hop");
+	        
 	        /* ParcouresultSet de la ligne de données de l'éventuel ResulSet retourné */
 	        while (resultSet.next()) {
 	        	CompteDTO ligne2 = new CompteDTO(resultSet.getInt("id"), resultSet.getInt("solde"), resultSet.getInt("proprietaires_id"));
 	        	compteResult.add(ligne2);
-				//System.out.println(resultSet.getInt("id") + " " + resultSet.getInt("solde") + " " +  resultSet.getInt("proprietaires_id"));
+				System.out.println(resultSet.getInt("id") + " " + resultSet.getInt("solde") + " " +  resultSet.getInt("proprietaires_id"));
 			}
 	    } catch ( SQLException e ) {
 	    	e.printStackTrace();
 	    } finally {
-	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+	    	
+		    	try {
+					connexion.commit();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		    	fermeturesSilencieuses( resultSet, preparedStatement, connexion );
 	    }
 		return compteResult;
 	}
 
 	@Override
-	public List<CompteDTO> findById(Integer id) {
+	public List<CompteDTO> findByProprio(ProprietaireDTO proprio) {
+		
+	    String SQL_REQ = "SELECT * FROM compte WHERE proprietaires_id = ?";
+
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	    	connexion.setAutoCommit(false);
+	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, false);
+	        resultSet = preparedStatement.executeQuery();
+	        
+	        /* ParcouresultSet de la ligne de données de l'éventuel ResulSet retourné */
+	        while (resultSet.next()) {
+	        	CompteDTO ligne2 = new CompteDTO(resultSet.getInt("id"), resultSet.getInt("solde"), resultSet.getInt("proprietaires_id"));
+	        	compteResult.add(ligne2);
+				System.out.println(resultSet.getInt("id") + " " + resultSet.getInt("solde") + " " +  resultSet.getInt("proprietaires_id"));
+			}
+	    } catch ( SQLException e ) {
+	    	e.printStackTrace();
+	    } finally {
+	    	
+		    	try {
+					connexion.commit();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		    	fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+	    }
+		return compteResult;
+	}
+	
+	@Override
+	public CompteDTO findById(Integer id) {
 	    String SQL_REQ = "SELECT * FROM compte WHERE id = ?";
+	    CompteDTO ligne2 = null;
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, false, id);
@@ -59,51 +99,146 @@ public class CompteDao extends DAO<CompteDTO>{
 	        //System.out.println("hop");
 	        /* ParcouresultSet de la ligne de données de l'éventuel ResulSet retourné */
 	        while (resultSet.next()) {
-	        	CompteDTO ligne2 = new CompteDTO(resultSet.getInt("id"), resultSet.getInt("solde"), resultSet.getInt("proprietaires_id"));
-	        	compteResult.add(ligne2);
+	        	ligne2 = new CompteDTO(resultSet.getInt("id"), resultSet.getInt("solde"), resultSet.getInt("proprietaires_id"));
 	        	System.out.println(resultSet.getInt("id") + " " + resultSet.getInt("solde") + " " +  resultSet.getInt("proprietaires_id"));
-				
 				}
 	    } catch ( SQLException e ) {
 	    	e.printStackTrace();
 	    } finally {
 	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
 	    }
-		return compteResult;
+		return ligne2;
 	}
 
 	@Override
 	public boolean create(CompteDTO compte) {
 		String SQL_REQ = "insert into compte(solde, proprietaires_id) values (?, ?)";
+		Integer resultSetInt = null;
 	    try {
-	        /* Récupération d'une connexion depuis la Factory */
-	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, false, compte.getSolde(), compte.getProprietaires_id());
-	        resultSet = preparedStatement.executeQuery();
 
-	        while (resultSet.next()) {
-	        	CompteDTO ligne2 = new CompteDTO(resultSet.getInt("id"), resultSet.getInt("solde"), resultSet.getInt("proprietaires_id"));
-	        	compteResult.add(ligne2);
-	        	System.out.println(resultSet.getInt("id") + " " + resultSet.getInt("solde") + " " +  resultSet.getInt("proprietaires_id"));
-				
-				}
+	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, true, compte.getSolde(), compte.getProprietaires_id());
+	        resultSetInt = preparedStatement.executeUpdate();
+	        
+	       // resultSet.next(); //lecture de tout le contenu
+	        if (resultSetInt == 1) {
+	        	System.out.println("Le compte est créé avec un solde de "+compte.getSolde());
+	        	return true;
+			} else{
+				System.out.println("Compte non créé");
+				return false;
+			}
+
 	    } catch ( SQLException e ) {
 	    	e.printStackTrace();
+	    	return false;
 	    } finally {
 	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
 	    }
-		return false;
+		
 	}
 
 	@Override
 	public boolean update(CompteDTO compte) {
-		// TODO Auto-generated method stub
-		return false;
+		String SQL_REQ = "UPDATE compte SET solde = ?, proprietaires_id = ? WHERE id = ?";
+		Integer resultSetInt = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, true, compte.getSolde(), compte.getProprietaires_id(), compte.getId());
+	        resultSetInt = preparedStatement.executeUpdate();
+	        
+	        if (resultSetInt == 1) {
+	        	System.out.println("Compte mis à jour, id="+compte.getId()+" solde="+compte.getSolde()+" proprio="+compte.getProprietaires_id());
+	        	return true;
+	        } else{
+				System.out.println("Compte non mis à jour");
+				return false;
+			}
+
+	    } catch ( SQLException e ) {
+	    	e.printStackTrace();
+	    	return false;
+	    } finally {
+	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+	    }
 	}
 
+	
+	@Override
+	public boolean transactionDepot(CompteDTO compte, Integer montant) {
+		String SQL_REQ = "UPDATE compte SET solde = ? WHERE id = ?";
+		Integer resultSetInt = null;
+		montant += compte.getSolde();
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+
+	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, true, montant, compte.getProprietaires_id(), compte.getId());
+	        resultSetInt = preparedStatement.executeUpdate();
+	        
+	        if (resultSetInt == 1) {
+	        	System.out.println("Compte mis à jour, id="+compte.getId()+" solde="+compte.getSolde()+"=>"+montant+" proprio="+compte.getProprietaires_id());
+	        	return true;
+	        } else{
+				System.out.println("Compte non mis à jour");
+				return false;
+			}
+
+	    } catch ( SQLException e ) {
+	    	e.printStackTrace();
+	    	return false;
+	    } finally {
+	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+	    }
+	}
+	@Override
+	public boolean transactionRetrait(CompteDTO compte, Integer montant) {
+		String SQL_REQ = "UPDATE compte SET solde = ? WHERE id = ?";
+		Integer resultSetInt = null;
+		montant = compte.getSolde()-montant;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	    	
+	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, true, montant, compte.getProprietaires_id(), compte.getId());
+	        resultSetInt = preparedStatement.executeUpdate();
+	        
+	        if (resultSetInt == 1) {
+	        	System.out.println("Compte mis à jour, id="+compte.getId()+" solde="+compte.getSolde()+"=>"+montant+" proprio="+compte.getProprietaires_id());
+	        	return true;
+	        } else{
+				System.out.println("Compte non mis à jour");
+				return false;
+			}
+
+	    } catch ( SQLException e ) {
+	    	e.printStackTrace();
+	    	return false;
+	    } finally {
+	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+	    }
+	}
+	
 	@Override
 	public boolean delete(CompteDTO compte) {
-		// TODO Auto-generated method stub
-		return false;
+		String SQL_REQ = "DELETE FROM compte WHERE id=?";
+		Integer resultSetInt = null;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, true, compte.getId());
+	        resultSetInt = preparedStatement.executeUpdate();
+
+	        if (resultSetInt == 1) {
+	        	System.out.println("Compte supprimé =  "+compte.getId());
+	        	return true;
+	        } else{
+				System.out.println("Compte non supprimé");
+				return false;
+			}
+
+	    } catch ( SQLException e ) {
+	    	e.printStackTrace();
+	    	return false;
+	    } finally {
+	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+	    }
 	}
 
 	/*
@@ -117,12 +252,10 @@ public class CompteDao extends DAO<CompteDTO>{
 	    }
 	    return preparedStatement;
 	}
+	
 	/* Fermeture silencieuse du resultset */
-
 	public static void fermetureSilencieuse( ResultSet resultSet ) {
-
 	    if ( resultSet != null ) {
-
 	        try {
 	            resultSet.close();
 	        } catch ( SQLException e ) {
@@ -131,68 +264,41 @@ public class CompteDao extends DAO<CompteDTO>{
 	    }
 	}
 	/* Fermeture silencieuse du statement */
-
 	public static void fermetureSilencieuse( Statement statement ) {
-
 	    if ( statement != null ) {
-
 	        try {
-
 	            statement.close();
-
 	        } catch ( SQLException e ) {
-
 	            System.out.println( "Échec de la fermeture du Statement : " + e.getMessage() );
-
 	        }
-
 	    }
-
 	}
 
 
-	/* Fermeture silencieuse de la connexion */
-
-	public static void fermetureSilencieuse( Connection connexion ) {
-
-	    if ( connexion != null ) {
-
-	        try {
-
-	            connexion.close();
-
-	        } catch ( SQLException e ) {
-
-	            System.out.println( "Échec de la fermeture de la connexion : " + e.getMessage() );
-
-	        }
-
-	    }
-
-	}
+//	/* Fermeture silencieuse de la connexion */
+//	public static void fermetureSilencieuse( Connection connexion ) {
+//	    if ( connexion != null ) {
+//	        try {
+//	            connexion.close();
+//	        } catch ( SQLException e ) {
+//	            System.out.println( "Échec de la fermeture de la connexion : " + e.getMessage() );
+//	        }
+//	    }
+//	}
 
 
 	/* Fermetures silencieuses du statement et de la connexion */
-
 	public static void fermeturesSilencieuses( Statement statement, Connection connexion ) {
-
 	    fermetureSilencieuse( statement );
-
-	    fermetureSilencieuse( connexion );
-
+//	    fermetureSilencieuse( connexion );
 	}
 
 
 	/* Fermetures silencieuses du resultset, du statement et de la connexion */
-
 	public static void fermeturesSilencieuses( ResultSet resultSet, Statement statement, Connection connexion ) {
-
 	    fermetureSilencieuse( resultSet );
-
 	    fermetureSilencieuse( statement );
-
-	    fermetureSilencieuse( connexion );
-
+//	    fermetureSilencieuse( connexion );
 	}
 
 

@@ -13,12 +13,19 @@ public abstract class DAO <T>{
 	
 	public abstract List<CompteDTO>  findAll();
 	
-	public abstract List<CompteDTO>  findById(Integer id);
+	public abstract List<CompteDTO> findByProprio(ProprietaireDTO proprio);
+	
+	public abstract CompteDTO  findById(Integer id);
 	
 	public abstract boolean  create(CompteDTO compte);
 	
 	public abstract boolean  update(CompteDTO compte);
 	
 	public abstract boolean  delete(CompteDTO compte);
-
+	
+	public abstract boolean transactionRetrait(CompteDTO compte, Integer montant);
+	
+	public abstract boolean transactionDepot(CompteDTO compte, Integer montant);
+	
+	
 }
