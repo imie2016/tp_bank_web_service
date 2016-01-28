@@ -19,10 +19,10 @@ public class Banck {
 		
 	}
 	
-	@WebMethod()
-	public String creerCompte(Proprietaire proprio) {
-		return compte.ajouterCompte(proprio);
-	}
+//	@WebMethod()
+//	public String creerCompte(Proprietaire proprio) {
+//		return compte.ajouterCompte(proprio);
+//	}
 	@WebMethod()
 	public String SoldeCompte(Integer identifiantProprietaire) {
 	    
