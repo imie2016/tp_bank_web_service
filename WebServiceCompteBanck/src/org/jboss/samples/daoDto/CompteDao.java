@@ -50,6 +50,39 @@ public class CompteDao implements CompteImpl{
 	}
 
 	@Override
+	public List<CompteDTO> findByProprio(ProprietaireDTO proprio) {
+		
+	    String SQL_REQ = "SELECT * FROM compte WHERE proprietaires_id = ?";
+
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	    	DAOFactory daof = DAOFactory.getInstance();
+	    	connexion = daof.getConnection();
+	    	connexion.setAutoCommit(false);
+	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, false);
+	        resultSet = preparedStatement.executeQuery();
+	        
+	        /* ParcouresultSet de la ligne de données de l'éventuel ResulSet retourné */
+	        while (resultSet.next()) {
+	        	CompteDTO ligne2 = new CompteDTO(resultSet.getInt("id"), resultSet.getInt("solde"), resultSet.getInt("proprietaires_id"));
+	        	compteResult.add(ligne2);
+				System.out.println(resultSet.getInt("id") + " " + resultSet.getInt("solde") + " " +  resultSet.getInt("proprietaires_id"));
+			}
+	    } catch ( SQLException e ) {
+	    	e.printStackTrace();
+	    } finally {
+	    	
+		    	try {
+					connexion.commit();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		    	fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+	    }
+		return compteResult;
+	}
+	
+	@Override
 	public CompteDTO findById(Integer id) {
 	    String SQL_REQ = "SELECT * FROM compte WHERE id = ?";
 	    CompteDTO ligne2 = null;
@@ -129,6 +162,64 @@ public class CompteDao implements CompteImpl{
 	    }
 	}
 
+	
+	@Override
+	public boolean transactionDepot(CompteDTO compte, Integer montant) {
+		String SQL_REQ = "UPDATE compte SET solde = ? WHERE id = ?";
+		Integer resultSetInt = null;
+		montant += compte.getSolde();
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	    	DAOFactory daof = DAOFactory.getInstance();
+	    	connexion = daof.getConnection();
+	    	
+	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, true, montant, compte.getProprietaires_id(), compte.getId());
+	        resultSetInt = preparedStatement.executeUpdate();
+	        
+	        if (resultSetInt == 1) {
+	        	System.out.println("Compte mis à jour, id="+compte.getId()+" solde="+compte.getSolde()+"=>"+montant+" proprio="+compte.getProprietaires_id());
+	        	return true;
+	        } else{
+				System.out.println("Compte non mis à jour");
+				return false;
+			}
+
+	    } catch ( SQLException e ) {
+	    	e.printStackTrace();
+	    	return false;
+	    } finally {
+	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+	    }
+	}
+	@Override
+	public boolean transactionRetrait(CompteDTO compte, Integer montant) {
+		String SQL_REQ = "UPDATE compte SET solde = ? WHERE id = ?";
+		Integer resultSetInt = null;
+		montant = compte.getSolde()-montant;
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	    	DAOFactory daof = DAOFactory.getInstance();
+	    	connexion = daof.getConnection();
+	    	
+	        preparedStatement = initialisationRequetePreparee(connexion, SQL_REQ, true, montant, compte.getProprietaires_id(), compte.getId());
+	        resultSetInt = preparedStatement.executeUpdate();
+	        
+	        if (resultSetInt == 1) {
+	        	System.out.println("Compte mis à jour, id="+compte.getId()+" solde="+compte.getSolde()+"=>"+montant+" proprio="+compte.getProprietaires_id());
+	        	return true;
+	        } else{
+				System.out.println("Compte non mis à jour");
+				return false;
+			}
+
+	    } catch ( SQLException e ) {
+	    	e.printStackTrace();
+	    	return false;
+	    } finally {
+	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+	    }
+	}
+	
 	@Override
 	public boolean delete(CompteDTO compte) {
 		String SQL_REQ = "DELETE FROM compte WHERE id=?";
@@ -217,5 +308,6 @@ public class CompteDao implements CompteImpl{
 	    fermetureSilencieuse( statement );
 //	    fermetureSilencieuse( connexion );
 	}
+
 
 }
