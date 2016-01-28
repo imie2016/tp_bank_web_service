@@ -3,7 +3,7 @@ package org.jboss.samples.webservices;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import org.jboss.samples.daoDto.DAOFactory;
+import org.jboss.samples.daoDto.DAOConnection;
 import org.jboss.samples.services.CompteCTRL;
 
 @WebService()
@@ -15,7 +15,7 @@ public class Banck {
 	@WebMethod()
 	public void testConnexion() {
 	    System.out.println("demarrage du test de connexion :");
-		DAOFactory.getInstance();
+		DAOConnection.getInstance();
 		
 	}
 	

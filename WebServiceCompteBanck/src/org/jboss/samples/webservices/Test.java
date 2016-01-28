@@ -2,7 +2,7 @@ package org.jboss.samples.webservices;
 
 import org.jboss.samples.daoDto.CompteDao;
 import org.jboss.samples.daoDto.CompteImpl;
-import org.jboss.samples.daoDto.DAOFactory;
+import org.jboss.samples.daoDto.DAOConnection;
 import org.jboss.samples.services.CompteCTRL;
 
 public class Test {

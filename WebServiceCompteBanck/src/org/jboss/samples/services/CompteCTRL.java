@@ -2,7 +2,7 @@ package org.jboss.samples.services;
 
 import java.util.List;
 import org.jboss.samples.daoDto.CompteDao;
-import org.jboss.samples.daoDto.DAOFactory;
+import org.jboss.samples.daoDto.DAOConnection;
 
 public class CompteCTRL implements CompteS{
 
